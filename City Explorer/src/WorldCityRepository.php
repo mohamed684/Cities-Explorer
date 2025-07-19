@@ -49,6 +49,30 @@ class WorldCityRepository {
         return $this->arrayToObj($entry);
     }
 
+    public function update(int $id, array $properites): WorldCityModel {
+        $city = (string) $properites['city'];
+        $cityAscii = (string) $properites['city_ascii'];
+        $country = (string) $properites['country'];
+        $iso2 = (string) $properites['iso2'];
+        $iso3 = (string) $properites['iso3'];
+        $population = (int) $properites['population'];
+
+        $stmt = $this->pdo->prepare('UPDATE worldcities SET 
+                city = :city, city_ascii = :cityAscii, country = :country, iso2 = :iso2, iso3 = :iso3, population = :population
+                WHERE id = :id');
+        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':city', $city);
+        $stmt->bindValue(':cityAscii', $cityAscii);
+        $stmt->bindValue(':country', $country);
+        $stmt->bindValue(':iso2', $iso2);
+        $stmt->bindValue(':iso3', $iso3);
+        $stmt->bindValue(':population', $population);
+
+        $stmt->execute();
+
+        return $this->fetchById($id);
+    }
+
     public function getDataCount(): int {
         $stmt = $this->pdo->prepare('SELECT COUNT(*) AS count FROM worldcities');
         $stmt->execute();

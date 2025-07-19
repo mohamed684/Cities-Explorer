@@ -2,14 +2,17 @@
 
 require __DIR__ . '/inc/all.inc.php';
 
-var_dump(mb_chr(127482) . mb_chr(127480));
-var_dump(mb_chr(127462));
-var_dump(mb_chr(ord('a')));
-var_dump(ord('u'));
-
 $WorldCityRepository = new WorldCityRepository($pdo);
 $entries = $WorldCityRepository->fetch();
 
+$count = $WorldCityRepository->getDataCount();
+$perPage = 50;
+$page = (int) ($_GET['page'] ?? 1);
+$page = max(1, $page);
+
+
 render('index.view', [
-    'entries' => $entries
+    'entries' => $entries,
+    'pagination' => $WorldCityRepository->paginate($page, $perPage),
+    'page' => $page
 ]);

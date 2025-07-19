@@ -16,4 +16,9 @@ class WorldCityModel {
         public string $capital,
         public int $population
     ) {}
+
+    public function getFlag(): string {
+        $iso = strtolower($this->iso2);
+        return mb_chr(127462 + ord($iso[0]) - ord('a')) . mb_chr(127462 + ord($iso[1]) - ord('a'));
+    }
 }

@@ -49,4 +49,35 @@ class WorldCityRepository {
         return $this->arrayToObj($entry);
     }
 
+    public function getDataCount(): int {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) AS count FROM worldcities');
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
+    public function paginate(int $page = 1, int $perPage = 20): array {
+        $offset = ($page - 1) * $perPage;
+        $count = $this->getDataCount();
+
+        $stmt = $this->pdo->prepare('SELECT * FROM worldcities ORDER BY population DESC LIMIT :limit OFFSET :offset');
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $entries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $models = [];
+
+        foreach($entries as $entry) {
+            $models[] = $this->arrayToObj($entry);
+        }
+
+        $pagination = [
+            'pages' => ceil($count / $perPage),
+            'entries' => $models
+        ];
+
+        return $pagination;
+    }
+
 }

@@ -1,5 +1,5 @@
 <h1>
-    City: <?= $city->city ?> (<?= $city->country ?>)
+    City: <?= $city->city ?> (<?= $city->getFlag() ?> <?= $city->country ?>)
 </h1>
 
 <table>
@@ -18,6 +18,14 @@
             </th>
             <td>
                 <?= $city->cityAscii ?>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Country Flag:
+            </th>
+            <td>
+                <?= $city->getFlag() ?>
             </td>
         </tr>
         <tr>

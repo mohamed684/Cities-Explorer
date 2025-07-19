@@ -2,8 +2,10 @@
 
 <ul>
     <?php foreach($entries as $city): ?>
-        <li>
-            <?= $city->city ?> (<?= $city->country ?>)
-        </li>
+        <a href="city.php?<?php echo http_build_query(['id' => $city->id]) ?>">
+            <li>
+                <?= $city->city ?> (<?= $city->country ?>)
+            </li>
+        </a>
     <?php endforeach ?>
 </ul>
